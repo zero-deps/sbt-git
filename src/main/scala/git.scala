@@ -23,30 +23,32 @@ object GitPlugin extends AutoPlugin {
       spaceDelimited("<arg>").parsed.toList match {
         case cmd :: Nil if cmd startsWith "s" =>
           def formatLine(c: String): String = " ".repeat(4)+c+" ".repeat(80-4-c.length)
-          val emptyLine = " ".repeat(80)
           val st = git.status.call
-          print(List(st.getChanged, st.getAdded).flatMap(_.asScala).toList.sorted match {
-            case Nil => ""
-            case xs => s"""
-            |Changes to be committed:
-            |\u001B[32m${xs.map(formatLine).mkString("\n")}\u001B[0m
-            |$emptyLine""".stripMargin
-          })
-          print(st.getModified.asScala.toList.sorted match {
-            case Nil => ""
-            case xs => s"""
-            |Changes not staged for commit:
-            |\u001B[31m${xs.map(formatLine).mkString("\n")}\u001B[0m
-            |$emptyLine""".stripMargin
-          })
-          print(List(st.getUntracked).flatMap(_.asScala).toList.sorted match {
-            case Nil => ""
-            case xs => s"""
-            |Untracked files:
-            |\u001B[31m${xs.map(formatLine).mkString("\n")}\u001B[0m
-            |$emptyLine""".stripMargin
-          })
-          s.log.info(emptyLine)
+          List(st.getChanged, st.getAdded).flatMap(_.asScala).toList.sorted match {
+            case Nil =>
+            case xs =>
+              s.log.info(" ")
+              s.log.info("Changes to be committed:")
+              xs.map(formatLine).map("\u001B[32m"+_+"\u001B[0m").foreach(s.log.info(_))
+              s.log.info(" ")
+          }
+          st.getModified.asScala.toList.sorted match {
+            case Nil =>
+            case xs =>
+              s.log.info(" ")
+              s.log.info("Changes not staged for commit:")
+              xs.map(formatLine).map("\u001B[31m"+_+"\u001B[0m").foreach(s.log.info(_))
+              s.log.info(" ")
+          }
+          List(st.getUntracked).flatMap(_.asScala).toList.sorted match {
+            case Nil =>
+            case xs =>
+              s.log.info(" ")
+              s.log.info("Untracked files:")
+              xs.map(formatLine).map("\u001B[31m"+_+"\u001B[0m").foreach(s.log.info(_))
+              s.log.info(" ")
+          }
+          s.log.info(" ")
         case "add" :: xs if xs.nonEmpty =>
           val add = git.add
           xs.foreach(add.addFilepattern)
@@ -54,8 +56,8 @@ object GitPlugin extends AutoPlugin {
           val add2 = git.add.setUpdate(true)
           xs.foreach(add2.addFilepattern)
           add2.call
-        case "commit" :: "-m" :: msg :: Nil if msg.nonEmpty =>
-          git.commit.setMessage(msg).call
+        case "commit" :: "-m" :: msg if msg.nonEmpty =>
+          git.commit.setMessage(msg.mkString(" ").stripPrefix("\"").stripSuffix("\"")).call
         case _ =>
           s.log.info("Available commands:")
           s.log.info("  git status")
@@ -81,7 +83,7 @@ object version {
       val desc = Option(git.describe.setTags(tags).call).map(_.stripPrefix(stripPrefix))
       val desc1 = desc.getOrElse(
         if (always) repo.newObjectReader.abbreviate(repo.resolve("HEAD")).name
-        else throw new Exception("no tags")
+        else throw new Exception("no tags. please add tag with `git tag -a <name> -m <name>` or use `zero.git.version(tags=true)`.")
       )
       val desc2 = if (dotted) desc1.replace('-','.') else desc1
       parts match {

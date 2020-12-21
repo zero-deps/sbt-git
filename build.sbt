@@ -2,7 +2,7 @@ scalaVersion := "2.12.10"
 githubOwner := "zero-deps"
 githubRepository := "sbt-git"
 organization := "io.github.zero-deps"
-version := "2.5.0" //zero.git.version()
+version := zero.git.version()
 scalacOptions ++= Vector(
   "-feature",
   "-deprecation",
