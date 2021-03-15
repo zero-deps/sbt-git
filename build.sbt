@@ -1,4 +1,4 @@
-scalaVersion := "2.12.10"
+scalaVersion := "2.12.13"
 githubOwner := "zero-deps"
 githubRepository := "sbt-git"
 organization := "io.github.zero-deps"

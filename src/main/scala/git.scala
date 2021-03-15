@@ -1,6 +1,5 @@
 package zero.git
 
-import java.io.File
 import sbt._, Keys._
 import sbt.complete.DefaultParsers._
 import org.eclipse.jgit.api._
@@ -77,24 +76,28 @@ object version {
     , always: Boolean = false
     , parts: Option[Int] = Some(3)
     ): String = {
-    val git = org.eclipse.jgit.api.Git.open(new File(dir))
-    val base = {
-      val repo = git.getRepository
-      val desc = Option(git.describe.setTags(tags).call).map(_.stripPrefix(stripPrefix))
-      val desc1 = desc.getOrElse(
-        if (always) repo.newObjectReader.abbreviate(repo.resolve("HEAD")).name
-        else throw new Exception("no tags. please add tag with `git tag -a <name> -m <name>` or use `zero.git.version(tags=true)`.")
-      )
-      val desc2 = if (dotted) desc1.replace('-','.') else desc1
-      parts match {
-        case None => desc2
-        case Some(i) =>
-          val count = desc2.split('.').length
-          if (count >= i) desc2
-          else desc2 + ".0".repeat(i-count)
+    if (file(s"$dir/.git").isFile) {
+      "0.1.0-SNAPSHOT"
+    } else {
+      val git = Git.open(file(dir))
+      val base = {
+        val repo = git.getRepository
+        val desc = Option(git.describe.setTags(tags).call).map(_.stripPrefix(stripPrefix))
+        val desc1 = desc.getOrElse(
+          if (always) repo.newObjectReader.abbreviate(repo.resolve("HEAD")).name
+          else throw new Exception("no tags. please add tag with `git tag -a <name> -m <name>` or use `zero.git.version(tags=true)`.")
+        )
+        val desc2 = if (dotted) desc1.replace('-','.') else desc1
+        parts match {
+          case None => desc2
+          case Some(i) =>
+            val count = desc2.split('.').length
+            if (count >= i) desc2
+            else desc2 + ".0".repeat(i-count)
+        }
       }
+      val dirty = if (git.status.call.getUncommittedChanges.isEmpty) "" else "-dirty"
+      base + dirty
     }
-    val dirty = if (git.status.call.getUncommittedChanges.isEmpty) "" else "-dirty"
-    base + dirty
   }
 }
