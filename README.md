@@ -2,6 +2,8 @@
 
 ![ci](https://github.com/zero-deps/ext/workflows/ci/badge.svg)
 
+Use git-describe as a version and run git commands inside SBT shell.
+
 ```scala
 // project/plugins.sbt:
 addSbtPlugin("io.github.zero-deps" % "sbt-git" % "latest.integration")
