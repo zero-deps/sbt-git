@@ -1,5 +1,4 @@
-resolvers += Resolver.githubPackages("zero-deps")
-addSbtPlugin("io.github.zero-deps" % "sbt-git" % "latest.integration")
+addSbtPlugin("io.github.zero-deps" % "sbt-git" % "2.5.4.g35fec15")
 
 /* publishing */
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "latest.integration")

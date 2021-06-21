@@ -1,4 +1,4 @@
-scalaVersion := "2.12.13"
+scalaVersion := "2.12.14"
 version := zero.git.version()
 scalacOptions ++= Vector(
   "-feature",
@@ -6,7 +6,7 @@ scalacOptions ++= Vector(
   "-Ywarn-unused:imports",
 )
 
-libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit" % "5.11.0.202103091610-r"
+libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit" % "latest.integration"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.1.0-SNAP13" % Test
 
 enablePlugins(SbtPlugin)
