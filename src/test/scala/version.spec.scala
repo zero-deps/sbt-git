@@ -2,7 +2,7 @@ package zero.git
 
 import sys.process._
 import org.scalatest.freespec.AnyFreeSpec
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 
 class VersionSpec extends AnyFreeSpec with Matchers {
   "version" in {

@@ -1,6 +1,8 @@
 # sbt-git
 
-![ci](https://github.com/zero-deps/ext/workflows/ci/badge.svg)
+![Production Ready](https://img.shields.io/badge/Project%20Stage-Production%20Ready-brightgreen.svg)
+
+Use git-describe as a version and run git commands inside SBT shell.
 
 ```scala
 // project/plugins.sbt:
@@ -14,12 +16,4 @@ sbt> git status // can be shorted
 sbt> git add [<pathspec>…]...
 sbt> git commit -m <msg>
 sbt> git help
-```
-
-# Publishing
-
-```
-export GPG_TTY=$(tty)
-sbt publishSigned
-open https://oss.sonatype.org/#stagingRepositories
 ```

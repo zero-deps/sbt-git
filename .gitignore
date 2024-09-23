@@ -1,4 +1,3 @@
-*.swp
 .DS_Store
-/.bsp/
+/.bsp/sbt.json
 target/

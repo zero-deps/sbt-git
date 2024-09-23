@@ -1,13 +1,13 @@
-scalaVersion := "2.12.13"
+scalaVersion := "2.12.20"
 version := zero.git.version()
-scalacOptions ++= Vector(
+scalacOptions ++= Seq(
   "-feature",
   "-deprecation",
   "-Ywarn-unused:imports",
 )
 
-libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit" % "5.11.0.202103091610-r"
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.1.0-SNAP13" % Test
+libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit" % "7.0.0.202409031743-r"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
 enablePlugins(SbtPlugin)
 
@@ -26,5 +26,4 @@ isSnapshot := true
 /* publishing */
 
 turbo := true
-useCoursier := true
 Global / onChangedBuildSource := ReloadOnSourceChanges
