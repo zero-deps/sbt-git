@@ -5,7 +5,15 @@ scalacOptions ++= Seq(
   "-Ywarn-unused:imports",
 )
 
-libraryDependencies += "org.eclipse.jgit" % "org.eclipse.jgit" % "7.6.0.202603022253-r"
+val zioVersion = "2.1.20"
+
+libraryDependencies ++= Seq(
+  "org.eclipse.jgit" % "org.eclipse.jgit" % "7.6.0.202603022253-r",
+  "dev.zio" %% "zio-test" % zioVersion % Test,
+  "dev.zio" %% "zio-test-sbt" % zioVersion % Test,
+)
+
+testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
 
 enablePlugins(SbtPlugin)
 
